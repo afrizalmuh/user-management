@@ -16,7 +16,7 @@ class UserRepository {
 
   public async getUsers(): Promise<IUser> {
     try {
-      const data: IUser = this.prisma.$queryRaw`SELECT * FROM users;`;
+      const data: IUser = await this.prisma.$queryRaw`SELECT * FROM users;`;
       console.log(data);
       return data;
     } catch (error) {

@@ -2,8 +2,11 @@ import express, { Request, Response } from 'express';
 import { config } from '@/constant/config';
 import { ResponseSuccess } from './utils/response';
 import { baseRouter } from './routes';
+import cors from 'cors';
 
 const app = express();
+app.use(express.json());
+app.use(cors());
 
 const port = config.APP_PORT;
 
