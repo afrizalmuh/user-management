@@ -10,7 +10,7 @@ class UserService {
   static createInstance(userRepository: UserRepository): UserService {
     return new UserService(userRepository);
   }
-  public async getUser(): Promise<IUser | undefined> {
+  public async getUser(): Promise<IUser[] | undefined> {
     try {
       const user = await this.userRepository.getUsers();
       return user;

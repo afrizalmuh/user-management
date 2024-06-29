@@ -14,10 +14,10 @@ class UserRepository {
     return this.instance;
   }
 
-  public async getUsers(): Promise<IUser> {
+  public async getUsers(): Promise<IUser[]> {
     try {
-      const data: IUser = await this.prisma.$queryRaw`SELECT * FROM users;`;
-      console.log(data);
+      const data: IUser[] = await this.prisma.user.findMany();
+      // const data: IUser[] = await this.prisma.$queryRaw`SELECT * FROM "User";`;
       return data;
     } catch (error) {
       return Promise.reject(error);
