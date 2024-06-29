@@ -14,7 +14,11 @@ app.post('/', (req: Request, res: Response) => {
   return ResponseSuccess(res, { message: 'SERVER RUNNING', statusCode: 200 });
 });
 
-app.use('/api', baseRouter);
+app.get('/', (req: Request, res: Response) => {
+  return ResponseSuccess(res, { message: 'SERVER RUNNING', statusCode: 200 });
+});
+
+app.use('/', baseRouter);
 
 app.listen(port, () => {
   console.log(`Server run on port: ${port}`);
