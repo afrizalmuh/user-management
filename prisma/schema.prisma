@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,13 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model User {
-  user_id           Int       @id @default(autoincrement())
-  fullname_users    String
-  username_users    String
-  password_users    String
-  role_id           Int
-  email_users       String
-  created_at_users  DateTime  @default(now())
-  updated_at_users  DateTime  @updatedAt
+  user_id          Int       @default(autoincrement())
+  fullname_users   String?   @db.VarChar
+  username_users   String?   @db.VarChar
+  password_users   String?   @db.VarChar
+  role_id          Int?
+  phone_number     String?   @db.VarChar(15)
+  email_users      String?   @db.VarChar
+  created_at_users DateTime? @default(now()) @db.Timestamp(6)
+  updated_at_users DateTime? @updatedAt @db.Timestamp(6)
+
+  @@ignore
+}
+
+model permissions {
+  permission_id    Int               @id
+  permission_name  String            @unique @db.VarChar
+  role_permissions role_permissions?
+}
+
+model role_permissions {
+  role_permission_id Int         @id
+  role_id            Int         @unique
+  permission_id      Int         @unique
+  permissions        permissions @relation(fields: [permission_id], references: [permission_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_permissions")
+  roles              roles       @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
+}
+
+model roles {
+  role_id          Int               @id @default(autoincrement())
+  role_name        String            @unique @db.VarChar
+  description      String?
+  createdat        DateTime?         @default(now()) @db.Timestamp(6)
+  role_permissions role_permissions?
 }
