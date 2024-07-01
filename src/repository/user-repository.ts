@@ -13,17 +13,35 @@ class UserRepository {
     this.instance = new UserRepository();
     return this.instance;
   }
-
+  
+  //get all users
   public async getUsers(): Promise<IUser[]> {
     try {
       // const data: IUser[] = await this.prisma.user.findMany();
       const data: IUser[] = await this.prisma.$queryRaw`SELECT * FROM "User";`;
-      console.log(data);
+      // console.log(data);
       return data;
     } 
     
     catch (error) {
       return Promise.reject(error);
+    }
+  }
+
+  //get 1 user
+
+  public async getOneUser(payload : IUser) {
+    try {
+      const data: IUser | null = await this.prisma.user.findUnique({
+        where : {
+          user_id : Number(payload.user_id)
+        }
+      })
+      return data
+    } 
+    
+    catch (error) {
+      return Promise.reject(error)
     }
   }
 
@@ -66,6 +84,22 @@ class UserRepository {
       return Promise.reject(error);
     }
   }
+
+  public async deleteUser(payload : IUser) {
+    try {
+      const result : IUser = await this.prisma.user.delete({
+        where:{
+          user_id : Number(payload.user_id)
+        }
+      })
+      return result  
+    } 
+    
+    catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
 }
 
 export default UserRepository;

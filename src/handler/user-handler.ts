@@ -22,7 +22,24 @@ const getUsers = async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
   }
-};
+}
+
+const getOneUser = async (req: Request, res:Response) => {
+  try {
+    const userServices = userService()
+    const payload = {...req.body.user_id,user_id:req.params.id}
+    const user = await userServices.getOneUser(payload)
+    return ResponseSuccess(res, {
+      data: user,
+      message : 'ok',
+      statusCode: 200
+    })  
+  } 
+  
+  catch (error) {
+    console.log(error)
+  }
+}
 
 const addUser = async (req: Request, res: Response) => {
   try {
@@ -38,14 +55,14 @@ const addUser = async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
   }
-};
+}
 
 const updateUser = async (req: Request, res: Response) => {
   try {
     const userServices = userService()
-    console.log(req.params)
+    // console.log(req.params)
     const payload = {...req.body, user_id:req.params.id, updated_at_users:new Date()}
-    console.log(payload)
+    // console.log(payload)
     const user = await userServices.updateUser(payload);
 
   return ResponseSuccess(res, {
@@ -58,6 +75,24 @@ const updateUser = async (req: Request, res: Response) => {
   catch (err) {
     console.log(err);
   }
-};
+}
 
-export { getUsers, addUser, updateUser };
+const deleteUser = async (req : Request, res : Response) => {
+  try {
+      const userServices = userService()
+      const payload = {...req.body, user_id:req.params.id}
+      const user = await userServices.deleteUser(payload)
+
+      return ResponseSuccess(res, {
+        data: user,
+        message : 'ok',
+        statusCode : 200
+      })
+  } 
+  
+  catch (error) {
+    console.log(error)
+  }
+}
+
+export { getUsers, addUser, updateUser, deleteUser, getOneUser };

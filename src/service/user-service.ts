@@ -21,6 +21,16 @@ class UserService {
     }
   }
 
+  public async getOneUser(payload : IUser) {
+    try {
+      const user = await this.userRepository.getOneUser(payload)
+      return user  
+    } 
+    
+    catch (error) {
+      return Promise.reject(error)
+    }
+  }
   public async addUser(payload : IAddUser) {
     try {
       const user = await this.userRepository.addUsers(payload)
@@ -36,6 +46,17 @@ class UserService {
       const user = await this.userRepository.updateUsers(payload)
       return user
     } 
+    catch (error) {
+      return Promise.reject(error)
+    }
+  }
+
+  public async deleteUser(payload : IUser){
+    try {
+      const user = await this.userRepository.deleteUser(payload)  
+      return user
+    } 
+    
     catch (error) {
       return Promise.reject(error)
     }
